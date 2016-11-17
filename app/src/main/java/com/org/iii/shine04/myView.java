@@ -12,7 +12,7 @@ import android.view.View;
 public class myView extends View {
     public myView(Context context, AttributeSet attrs) {
         super(context, attrs);
-    setBackgroundColor(Color.GREEN);
+    setBackgroundColor(Color.BLACK);
     }
 
 }
