@@ -18,12 +18,12 @@ public class myView extends View {
         super(context, attrs);
     setBackgroundColor(Color.BLACK);
 
-    setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Log.v("shine","onclick");
-        }
-    });
+//    setOnClickListener(new OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            Log.v("shine","onclick");
+//        }
+//    });
     }
 
     @Override
@@ -38,7 +38,13 @@ public class myView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.v("shine","onTouchEvent");
-        return super.onTouchEvent(event);
+       // boolean ret = super.onTouchEvent(event);
+        float ex = event.getX(),ey = event.getY();
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            Log.v("shine","down:"+ ex +"x"+ey);
+        }else if(event.getAction()==MotionEvent.ACTION_MOVE) {
+            Log.v("shine", "move:" + ex +"x"+ey);
+        }
+        return true;
     }
 }
