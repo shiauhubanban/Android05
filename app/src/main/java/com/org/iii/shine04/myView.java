@@ -9,21 +9,16 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-/**
- * Created by user on 2016/11/17.
- */
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class myView extends View {
+    private LinkedList<LinkedList<HashMap<String,Float>>> lines;
+
     public myView(Context context, AttributeSet attrs) {
         super(context, attrs);
-    setBackgroundColor(Color.BLACK);
-
-//    setOnClickListener(new OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            Log.v("shine","onclick");
-//        }
-//    });
+        setBackgroundColor(Color.BLACK);
+        lines = new LinkedList<>();
     }
 
     @Override
@@ -31,20 +26,43 @@ public class myView extends View {
         super.onDraw(canvas);
         Paint paint = new Paint();
         paint.setColor(Color.YELLOW);
-        canvas.drawCircle(100,100,40,paint);
-        canvas.drawLine(0,0,200,200,paint);
+        paint.setStrokeWidth(4);
+        //canvas.drawCircle(100,100,40, paint);
 
+        for (LinkedList<HashMap<String,Float>> line : lines) {
+            for (int i = 1; i < line.size(); i++) {
+                HashMap<String, Float> p0 = line.get(i - 1);
+                HashMap<String, Float> p1 = line.get(i);
+                float x0 = p0.get("x"), y0 = p0.get("y");
+                float x1 = p1.get("x"), y1 = p1.get("y");
+                canvas.drawLine(x0, y0, x1, y1, paint);
+            }
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-       // boolean ret = super.onTouchEvent(event);
-        float ex = event.getX(),ey = event.getY();
-        if(event.getAction()==MotionEvent.ACTION_DOWN){
-            Log.v("shine","down:"+ ex +"x"+ey);
-        }else if(event.getAction()==MotionEvent.ACTION_MOVE) {
-            Log.v("shine", "move:" + ex +"x"+ey);
+        float ex = event.getX(), ey = event.getY();
+
+        if (event.getAction() == MotionEvent.ACTION_DOWN){
+            touchDownTask(ex, ey);
+        }else if (event.getAction() == MotionEvent.ACTION_MOVE){
+            touchMoveTask(ex, ey);
         }
         return true;
+    }
+    private void touchDownTask(float ex, float ey){
+        LinkedList<HashMap<String,Float>> line = new LinkedList<>();
+        HashMap<String,Float> point = new HashMap<>();
+        point.put("x", ex); point.put("y", ey);
+        line.add(point);
+        lines.add(line);
+        invalidate();
+    }
+    private void touchMoveTask(float ex, float ey){
+        HashMap<String,Float> point = new HashMap<>();
+        point.put("x", ex); point.put("y", ey);
+        lines.getLast().add(point);
+        invalidate();
     }
 }
