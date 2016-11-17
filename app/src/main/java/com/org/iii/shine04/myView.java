@@ -60,9 +60,13 @@ public class myView extends View {
         invalidate();
     }
     private void touchMoveTask(float ex, float ey){
-        HashMap<String,Float> point = new HashMap<>();
+        HashMap<String ,Float> point = new HashMap<>();
         point.put("x", ex); point.put("y", ey);
         lines.getLast().add(point);
+        invalidate();
+    }
+    void clear(){
+        lines.clear();
         invalidate();
     }
 }
